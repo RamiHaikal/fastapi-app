@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+
 
 app = FastAPI()
 
@@ -8,4 +10,14 @@ def read_root():
 
 @app.get("/greet/{name}")
 def greet(name: str):
-    return {"Hello": name}
+    return {"greeting": f"Hello, {name}!"}
+
+class SumRequest(BaseModel):
+    a: int
+    b: int
+
+@app.post("/sum")
+def calculate_sum(request: SumRequest):
+
+    total = request.a + request.b
+    return {"sum": total}
